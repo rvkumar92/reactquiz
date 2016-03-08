@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import QuestionsList from './QuestionsList.jsx'
+import QuestionsList from './QuestionsList.jsx';
+import Scorebox from './Scorebox.jsx';
+import Results from './Results.jsx';
 class App extends Component {
     constructor(props){
         super(props);
@@ -103,13 +104,26 @@ class App extends Component {
                 }
             ],
             score: 0,
-            current: 0
+            current: 1
         }
     }
+    updateScore(score){
+        this.setState({score: score})
+    }
+    updateCurrent(current){
+        this.setState({current: current})
+    }
     render(){
+        if(this.state.current < this.state.questions.length + 1){
+            var scorebox = <Scorebox {...this.state}/>
+        }else{
+            var results = <Results {...this.state}/>
+        }
         return(
             <div>
-                <QuestionsList {...this.state} />
+                {scorebox}
+                {results}
+                <QuestionsList setCurrent={this.updateCurrent.bind(this)} setScore={this.updateScore.bind(this)} {...this.state} />
             </div>
         )
     }
